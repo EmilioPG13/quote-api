@@ -32,6 +32,25 @@ app.post('/api/quotes', (req, res) => {
     }
 })
 
+// Route for updating an existing quote
+app.put('/api/quotes/:id', (req, res) => {
+    const { id } = req.params;
+    const { quote, person } = req.body;
+
+    // Find the index of th quote with the given id
+    const index = quotes.findIndex(q => q.id == id);
+
+    if (index !== -1) {
+        // Update the quote at the found index
+        quotes[index] = { id, quote, person };
+        res.json({ quote: quotes[index] });
+    } else if (index === -1) {
+        res.status(404).json({ error: 'Quote not found.'});
+    } else {
+        res.status(400).json({ error: 'Both quote and person are required.' });
+    }
+})
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`);
