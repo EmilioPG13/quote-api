@@ -51,6 +51,19 @@ app.put('/api/quotes/:id', (req, res) => {
     }
 })
 
+// Route for deleting a quote
+app.delete('/api/quotes/:id', (req, res) => {
+    const { id } = req.params;
+    const index = quotes.findIndex(q => q.id == id);
+
+    if (index !== -1) {
+        quotes.splice(index, 1);
+        res.json({ message: 'Quote deleted successfully.' });
+    } else {
+        res.status(404).json({ error: 'Quote not found.' });
+    }
+})
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`);
